@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In - Hostel Registration</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='signin.css') }}">
+</head>
+<body>
+  <div id="sastra">
+    <img src="{{url_for('static',filename='sastraimg.png')}}" alt="Sastra Logo" width="100px" height="100px">
+  </div>
+
+  <div id="sastra1">
+    <strong>SIGN IN FORM</strong>
+    <hr>
+    <div id="box">
+      <form id="registerForm" method="POST" action="/register">
+        <fieldset>
+          <legend>New User Registration</legend><br>
+          NAME:<br><input type="text" name="name" required><br><br>
+          DATE OF BIRTH:<br><input type="date" name="dob" required><br><br>
+          FATHER'S NAME:<br><input type="text" name="father_name" required><br><br>
+          PHONE NUMBER:<br><input type="text" name="phone" required><br><br>
+          EMAIL:<br><input type="email" name="email" required><br><br>
+          <button type="submit">REGISTER</button>
+        </fieldset>
+      </form>
+    </div>
+    <p class="login-link">Already a user? <a href="{{ url_for('login_page') }}">Login here</a></p>
+  </div>
+
+  <div id="sastra2">WebPage developed by Shashank Reddy Sunny</div>
+
+ <script>
+  // function generateUserId() {
+  //   return Math.floor(10000000 + Math.random() * 90000000).toString();
+  // }
+
+  // function generatePassword(length = 6) {
+  //   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  //   let pwd = '';
+  //   for (let i = 0; i < length; i++) {
+  //     pwd += chars.charAt(Math.floor(Math.random() * chars.length));
+  //   }
+  //   return pwd;
+  // }
+document.getElementById("registerForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    
+    // let userId = generateUserId();
+    // let password = generatePassword();
+    // formData.append("user_id", userId);
+    // formData.append("password", password);
+
+    let response = await fetch("/register", {
+        method: "POST",
+        body: formData
+    });
+
+   let data = await response.json();
+
+      if (data.success) {
+        alert("✅ Registration Successful!\nWelcome " + data.name + "\nUser ID: " + data.reg_num+ "\nPassword:" +data.password);
+        // redirect to dashboard after login
+        window.location.href = "/dashboard";
+      } else {
+        alert("❌ " + data.message);
+      }
+
+});

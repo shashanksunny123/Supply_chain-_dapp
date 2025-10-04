@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hostel Registration</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylingsasstra.css')}}">
+</head>
+<body>
+  <div id="sastra">
+    <img src="{{ url_for('static', filename='sastraimg.png') }}" width="100px" height="100px">
+  </div>
+
+  <div id="sastra1">
+    <strong>REGISTRATION INTERFACE</strong>
+    <hr><hr>
+    <div id="box">
+      <form id="loginForm" method="POST">
+        <fieldset>
+          <legend>LOGIN FORM</legend><br>
+          REGISTER_NUM: <input type="text" name="regno" required><br><br>
+          PASSWORD (dd/mm/yyyy): <input type="password" name="password" required><br><br>
+          <button type="submit" id="loginBtn">LOGIN</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
+  <div id="sastra2">WebPage developed by Shashank Reddy Sunny</div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      let formData = new FormData(this);
+
+      let response = await fetch("/login", {
+        method: "POST",
+        body: formData
+      });
+
+      let data = await response.json();
+
+      if (data.success) {
+        alert("✅ Login successful!\nWelcome " + data.name + "\nUser ID: " + data.user_id);
+        // go to particular after login
+        window.location.href = "https://www.sastra.edu";
+      } else {
+        alert("❌ " + data.message);
+      }
+    });
+  </script>
+</body>
+</html>
